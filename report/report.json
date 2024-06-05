@@ -1,0 +1,13 @@
+{
+    "first-name": "Siebe",
+    "last-name": "Sterckx",
+    "github-url": "https://github.com/ucll-vgo2122/minesweeper-SiebeSterckx",
+    "framework": "WPF",
+    "extensions": [
+	"Mouse hovers over square lights up",
+	"Different font colors",
+	"Timer",
+	"Custom mine probability",
+	"Quickstart"
+]
+}

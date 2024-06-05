@@ -1,0 +1,37 @@
+// ROOT
+:tip-caption: 💡
+:note-caption: ℹ️
+:important-caption: ⚠️
+:task-caption: 🔨
+:source-highlighter: pygments
+:toc: left
+:toclevels: 3
+:experimental:
+:nofooter:
+
+= Getting Started
+
+[IMPORTANT]
+====
+Make sure to regularly commit your changes to the repository.
+This will allow you to experiment with an easy mind: if things go wrong, you can easily reset it to the last known working version.
+====
+
+include::getting-started/setting-up.asciidoc[]
+
+include::getting-started/create-grid.asciidoc[]
+
+include::getting-started/igame.asciidoc[]
+
+include::getting-started/visualizing-squares.asciidoc[]
+
+include::getting-started/view-models.asciidoc[]
+
+include::getting-started/uncovering.asciidoc[]
+
+include::getting-started/reactive.asciidoc[]
+
+== You're On Your Own Now
+
+The guide ends here but you are not at the project minimum requirements just yet.
+Head over to the <<requirements.asciidoc#,Requirements>> page to see what more you can do.

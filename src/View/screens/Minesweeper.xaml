@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="View.screens.Minesweeper"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:View.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+
+    <!-- Converters -->
+    <UserControl.Resources>
+        <converters:SquareImageConverter x:Key="squareImageConverter"
+                                         Uncovered="/screens/img/blue.png"                 
+                                         Mine="/screens/img/mine.png"
+                                         Flagged="/screens/img/flag.png"/>
+        
+        <converters:SquareVisibilityConverter x:Key="squareVisibilityConverter"
+                                              Uncovered="Visible"
+                                              Covered="Hidden"
+                                              Mine="Hidden"
+                                              Flagged="Hidden"/>
+        
+        <converters:AdjacentMineCountConverter x:Key="adjacentMineCountConverter"/>
+        
+        <converters:GameStatusConverter x:Key="gameStatusConverter" 
+                                        Lost="YOU LOST"
+                                        Won="YOU WON!"
+                                        DefaultText="Game in progress..."/>
+
+        <converters:ColorNumberConverter x:Key="colorNumberConverter"
+                                         Een="Black"
+                                         Twee="Yellow"
+                                         Drie="Red"
+                                         Vier="Green"
+                                         Vijf="White"
+                                         Zes="Purple"
+                                         Zeven="Brown"
+                                         Acht="Grey"/>
+    </UserControl.Resources>
+    
+
+    <Viewbox Stretch="Uniform">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+            <!-- Row Definitions -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <!-- Game Status -->
+            <TextBlock Text="{Binding Game.Value.Status, Converter={StaticResource gameStatusConverter}}" Grid.Row="0"  FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <!-- Timer -->
+            <TextBlock x:Name="TimeTextBlock" Grid.Row="1"  FontSize="20" FontWeight="Bold" HorizontalAlignment="center" VerticalAlignment="Center"/>
+            <!-- Exit Button -->
+            <Button Grid.Row="3" MaxWidth="150" MaxHeight="30" FontSize="15"  FontWeight="Bold" BorderThickness="2" BorderBrush="Black" Content="Exit to settings" Command="{Binding ExitGameCommand}" HorizontalAlignment="Center"/>
+
+            <!-- GAME -->
+            <ItemsControl ItemsSource="{Binding Board.Rows}" Grid.Row="2">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ItemsControl ItemsSource="{Binding Squares}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="35" Height="35" Command="{Binding Uncover}">
+                                        <!-- RightClick for flag -->
+                                        <Button.InputBindings>
+                                            <MouseBinding Gesture="RightClick" Command="{Binding Flag}"/>
+                                        </Button.InputBindings>
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Name="border" Background="Gray" BorderThickness="2" BorderBrush="Black" CornerRadius="5">
+                                                    <ContentPresenter />
+                                                </Border>
+                                                <!-- Hover colors -->
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="border" Property="BorderBrush" Value="Red" />
+                                                        <Setter TargetName="border" Property="Background" Value="White" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                        <Grid>
+                                            <!-- Images -->
+                                            <Image Width="30" Height="30">
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="{Binding Square.Value.Status, Converter={StaticResource squareImageConverter}}"/>
+                                                        <!-- All mines -->
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding GameLostContainingMines.Value}" Value="True">
+                                                                <Setter Property="Source" Value="/screens/img/mine.png"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                            <!-- Neighboring mines -->
+                                            <TextBlock Text="{Binding Square.Value.NeighboringMineCount, Converter={StaticResource adjacentMineCountConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding Square.Value.Status, Converter={StaticResource squareVisibilityConverter}}" FontWeight="Bold">
+                                                <TextBlock.Foreground>
+                                                    <Binding Path="Square.Value.NeighboringMineCount" Converter="{StaticResource colorNumberConverter}"/>
+                                                </TextBlock.Foreground>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
+        </Grid>
+    </Viewbox>
+</UserControl>

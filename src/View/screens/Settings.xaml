@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="View.screens.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    
+    <Viewbox Stretch="Uniform" MaxWidth="900">
+        <Grid Margin="20">
+            
+            <!-- Row Definitions -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Preset Buttons -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,10">
+                <TextBlock Text="Presets: " FontWeight="Bold" VerticalAlignment="Center" />
+                <Button Width="100" Height="30" FontWeight="Bold" Background="SpringGreen" HorizontalAlignment="Center" Content="Easy" Command="{Binding EasyGameCommand}" />
+                <Button Width="100" Height="30" FontWeight="Bold" Background="Orange"  HorizontalAlignment="Center" Content="Medium" Command="{Binding MediumGameCommand}"/>
+                <Button Width="100" Height="30" FontWeight="Bold" Background="Red" HorizontalAlignment="Center" Content="Hard" Command="{Binding HardGameCommand}"/>
+            </StackPanel>
+
+            <!-- Flooding Checkbox -->
+            <CheckBox Grid.Row="1" IsChecked="{Binding FloodingEnabled}" Content="Enable Flooding" FontSize="12" Margin="0,10,0,10"/>
+
+            <!-- BoardSize Slider -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,10">
+            <TextBlock Text="Board Size:" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Slider x:Name="sliderBoard" Value="{Binding BoardSize, Mode=TwoWay}" Maximum="{Binding MaxBoardSize, Mode=TwoWay}" Minimum="{Binding MinBoardSize, Mode=TwoWay}" TickFrequency="1" IsSnapToTickEnabled="True" Width="200" Margin="10,0,0,0"/>
+            <TextBlock x:Name="sliderValueBoard" Margin="10,0,0,0" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat=" {0} X {0}">
+                        <Binding ElementName="sliderBoard" Path="Value"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+
+            <!-- MineProbability slider -->
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,10,0,10">
+                <TextBlock Text="Mine probability:" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Slider x:Name="sliderMine" Value="{Binding MineProbability, Mode=TwoWay}" Maximum="{Binding MaxMineProbability, Mode=TwoWay}" Minimum="{Binding MinMineProbability, Mode=TwoWay}" TickFrequency="1" IsSnapToTickEnabled="True" Width="200" Margin="10,0,0,0"/>
+                <TextBlock x:Name="sliderValueMine"  Margin="10,0,0,0" VerticalAlignment="Center">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Level {0}">
+                            <Binding ElementName="sliderMine" Path="Value" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+
+            <!-- StartGame Button -->
+            <Button Grid.Row="4" Content="Start game with these settings" FontSize="15" FontWeight="Bold" Background="Black" Foreground="White" Command="{Binding StartGameCommand}"    />
+        
+        </Grid>
+    </Viewbox>
+</UserControl>
